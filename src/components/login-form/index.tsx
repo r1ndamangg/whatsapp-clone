@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { ChangeEventHandler, useState } from "react";
+import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import { useAuthStore } from "@/store";
 
 interface FormValues {
@@ -16,11 +16,17 @@ const LoginForm = () => {
     idInstance: "",
   });
 
-  const handleSubmit = () => {
-    if (formValues) setUser(formValues);
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    if (!formValues.apiTokenInstance || !formValues.idInstance) {
+      return;
+    }
+
+    setUser(formValues);
   };
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    e.preventDefault();
     setFormValues((formValues) => {
       const { value, name } = e.target;
 
@@ -34,7 +40,7 @@ const LoginForm = () => {
     <div className="w-full h-full">
       <div className="flex justify-center items-center h-full">
         <form
-          className="w-full max-w-sm p-6 flex flex-col gap-3"
+          className="w-full max-w-sm p-6 flex flex-col gap-3 bg-custom-dark rounded-lg"
           onSubmit={handleSubmit}
         >
           <div className="grid w-full items-center gap-1.5">
@@ -55,7 +61,12 @@ const LoginForm = () => {
               onChange={handleChange}
             />
           </div>
-          <Button>Войти</Button>
+          <Button
+            className="bg-custom-teal"
+            disabled={!formValues.apiTokenInstance || !formValues.idInstance}
+          >
+            Войти
+          </Button>
         </form>
       </div>
     </div>

@@ -1,14 +1,10 @@
+import { User } from "@/types/user";
 import { create } from "zustand";
 
 type AuthStoreType = {
   user: User | null;
   setUser: (user: User) => void;
 };
-
-interface User {
-  idInstance: string;
-  apiTokenInstance: string;
-}
 
 export const useAuthStore = create<AuthStoreType>((set) => ({
   user: null,
